@@ -94,7 +94,8 @@ class StoryController extends Controller
  */
 public function read($id)
 {
-    $story = Story::with('author')->findOrFail($id);
+    $story = Story::with(['author', 'categories', 'comments.user'])
+        ->findOrFail($id);
     
     // Record reading history if user is authenticated
     if (Auth::check()) {
@@ -104,7 +105,7 @@ public function read($id)
         );
     }
     
-    return view('stories.read', compact('story'));
+    return view('user.stories.read', compact('story'));
 }
 
 /**
