@@ -11,12 +11,12 @@ class Story extends Model
 
     protected $fillable = [
         'name',
-        'summary',
+        'summary',  // Make sure this matches your database column
         'content',
         'author_id',
-        'status',
         'age_rating',
         'language',
+        'status',
         'cover_image',
     ];
 
@@ -37,11 +37,11 @@ class Story extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'story_category'); // Nếu bạn có bảng trung gian story_category
+        return $this->belongsToMany(Category::class);
     }
 
     public function hashtags()
-    {
-        return $this->belongsToMany(Hashtag::class, 'story_hashtag');
-    }
+{
+    return $this->hasMany(Hashtag::class);
+}
 }

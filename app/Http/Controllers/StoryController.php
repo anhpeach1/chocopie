@@ -36,31 +36,46 @@ class StoryController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate dữ liệu
         $validatedData = $request->validate([
             'name' => 'required|max:255',
-            'summary' => 'nullable|string',
-            'content' => 'required|string',
-            'author_id' => 'required|exists:users,id',
-            'age_rating' => 'nullable|string|in:Tất cả,13+,16+,18+',
-            'language' => 'nullable|string',
-            'cover_image' => 'nullable|url',
-            'category_ids' => 'nullable|array',
+            'description' => 'required',
+            'content' => 'required',
+            'category_ids' => 'required|array',
             'category_ids.*' => 'exists:categories,id',
-            'hashtag_ids' => 'nullable|array',
-            'hashtag_ids.*' => 'exists:hashtags,id',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'status' => 'nullable|string',
+            'age_rating' => 'nullable|string',
+            'language' => 'nullable|string'
         ]);
 
+        // Thêm author_id là user hiện tại
+        $validatedData['author_id'] = Auth::id();
+
+        // Xử lý upload ảnh bìa nếu có
+        if ($request->hasFile('cover_image')) {
+            $imagePath = $request->file('cover_image')->store('covers', 'public');
+            $validatedData['cover_image'] = $imagePath;
+        }
+
+        // Tạo story mới
         $story = Story::create($validatedData);
 
-        if (isset($validatedData['category_ids'])) {
-            $story->categories()->attach($validatedData['category_ids']);
-        }
-        if (isset($validatedData['hashtag_ids'])) {
-            $story->hashtags()->attach($validatedData['hashtag_ids']);
+        // Thêm categories
+        if ($request->has('category_ids')) {
+            $story->categories()->attach($request->category_ids);
         }
 
-        return redirect()->route('stories.index')->with('success', 'Truyện đã được tạo thành công.');
+        // Xử lý hashtags nếu có
+        if ($request->has('hashtag_ids')) {
+            $hashtags = json_decode($request->hashtag_ids);
+            foreach ($hashtags as $tagName) {
+                $hashtag = Hashtag::firstOrCreate(['name' => $tagName]);
+                $story->hashtags()->attach($hashtag->id);
+            }
+        }
+
+        return redirect()->route('user.stories.dashboard')->with('success', 'Truyện đã được tạo thành công.');
     }
 
     /**

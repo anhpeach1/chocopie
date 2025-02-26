@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="{{ route('user.stories.index') }}">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Wattpad.svg/1200px-Wattpad.svg.png" alt="Logo" style="height: 30px;">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +39,7 @@
                     Write
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLinkWrite">
-                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="{{ route('user.stories.create') }}">Create</a>
                     <a class="dropdown-item" href="#">Another action</a>
                     <a class="dropdown-item" href="#">Something else here</a>
                 </div>
@@ -49,6 +49,9 @@
                     <i class="fas fa-user"></i> <!-- Font Awesome user icon -->
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userProfileDropdown">
+                    <a class="dropdown-item" href="{{ route('user.stories.dashboard') }}">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
                     <a class="dropdown-item" href="{{ route('profile.edit') }}">
                         <i class="fas fa-user-edit"></i> Profile
                     </a>
