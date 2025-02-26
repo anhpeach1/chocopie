@@ -240,3 +240,39 @@ body {
         width: 150px; /* Adjust card width on smaller screens */
     }
 }
+
+/* Remember Me and Forgot Password */
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.remember-me input[type="checkbox"] {
+    border-radius: 4px;
+    border: 1px solid #d1d5db;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-bottom: 1rem;
+}
+
+.forgot-password a {
+    color: #4B5563;
+    text-decoration: underline;
+    font-size: 0.875rem;
+}
+
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+}
+
+.alert-success {
+    background-color: #DEF7EC;
+    color: #03543F;
+    border: 1px solid #84E1BC;
+}

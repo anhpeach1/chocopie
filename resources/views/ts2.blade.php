@@ -21,19 +21,6 @@
             </div>
         </header>
     <div class="container">
-        <!-- <header class="header">
-            <div class="header-left">
-                <a href="#" class="back-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-                </a>
-                <span class="header-title">Thêm truyện mới</span>
-            </div>
-            <div class="header-right">
-                <button class="cancel-button">Huỷ</button>
-                <button class="skip-button">Đăng bài</button>
-            </div>
-        </header> -->
-
         <main class="main-content">
             <section class="cover-section">
                 <div class="cover-placeholder">
@@ -63,19 +50,6 @@
                     </label>
                     <textarea id="description" rows="3"></textarea>
                 </div>
-
-                <!-- <div class="form-group">
-                    <label>Main Characters
-                        <span class="info-icon-inline">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-info"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                        </span>
-                    </label>
-                    <div class="main-characters-input">
-                        <input type="text" placeholder="Name">
-                        <button class="add-character-button">+</button>
-                    </div>
-                </div> -->
-
                 <div class="form-group">
                     <label for="category">Thể loại
                         <span class="info-icon-inline">
@@ -163,23 +137,6 @@
         
     </div>
     <footer class="footer">
-            <!-- <nav class="footer-nav">
-                <a href="#">Wattpad Originals</a>
-                <a href="#">Try Premium</a>
-                <a href="#">Get the App</a>
-                <a href="#">Language</a>
-                <a href="#">Writers</a>
-                <a href="#">Brand Partnerships</a>
-                <a href="#">Jobs</a>
-                <a href="#">Press</a>
-            </nav>
-            <nav class="footer-nav footer-bottom-nav">
-                <a href="#">Terms</a>
-                <a href="#">Privacy</a>
-                <a href="#">Payment Policy</a>
-                <a href="#">Accessibility</a>
-                <a href="#">Help</a>
-            </nav> -->
         </footer>
 </body>
 </html>

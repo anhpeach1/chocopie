@@ -51,6 +51,7 @@
 
 </head>
 <body class="font-sans antialiased">
+<x-navbar-login />
     <div class="container">
         <div class="main-banner">
             <div id="mainCarousel" class="carousel slide" data-ride="carousel">
