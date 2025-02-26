@@ -14,14 +14,43 @@ class UserStoryController extends Controller
     /**
      * Display a listing of the user's stories.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $stories = Story::where('author_id', Auth::id())
-            ->with(['categories', 'hashtags'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        $query = Story::with(['author', 'categories', 'comments'])
+            ->where('status', 'published');
 
-        return view('user.stories.index', compact('stories'));
+        // Filter by category
+        if ($request->filled('category')) {
+            $query->whereHas('categories', function($q) use ($request) {
+                $q->where('categories.id', $request->category);
+            });
+        }
+
+        // Sort stories
+        switch($request->get('sort')) {
+            case 'oldest':
+                $query->oldest();
+                break;
+            case 'most_viewed':
+                $query->orderByDesc('views');
+                break;
+            default:
+                $query->latest();
+                break;
+        }
+
+        $stories = $query->paginate(12);
+        
+        // Append query parameters
+        $stories->appends($request->only(['category', 'sort']));
+
+        $categories = Category::orderBy('name')->get();
+        $featuredStories = Story::where('status', 'published')
+            ->orderByDesc('views')
+            ->take(3)
+            ->get();
+
+        return view('user.stories.index', compact('stories', 'categories', 'featuredStories'));
     }
 
     /**
@@ -213,5 +242,13 @@ class UserStoryController extends Controller
             ->paginate(10);
 
         return view('user.stories.dashboard', compact('stories'));
+    }
+
+    // Add a method to increment views
+    public function incrementViews($id)
+    {
+        $story = Story::findOrFail($id);
+        $story->increment('views');
+        return $story->views;
     }
 }

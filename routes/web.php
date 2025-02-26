@@ -22,7 +22,7 @@ Route::get('/dashboard', function () {
     if (Auth::user()->userType == 'admin') {
         return redirect()->route('admin.dashboard');
     } elseif (Auth::user()->userType == 'user') {
-        return redirect()->route('user.index');
+        return redirect()->route('user.stories.index');
     }
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -46,10 +46,15 @@ Route::middleware(['auth', 'userMiddleware'])->group(function () {
     // Route::post('/stories', [StoryController::class, 'store'])->name('stories.store');
     Route::prefix('user')->name('user.')->group(function () {
         // Dashboard route should be here
-        Route::get('/stories/dashboard', [UserStoryController::class, 'dashboard'])->name('stories.dashboard');
+        // Route::get('/stories/dashboard', [UserStoryController::class, 'dashboard'])->name('stories.dashboard');
         // Resource routes
+//         Route::get('/stories/{id}/read', [StoryController::class, 'read'])->name('stories.read');
+// Route::post('/stories/{id}/track-view', [StoryController::class, 'trackView'])->name('stories.track-view');
         Route::get('/stories/dashboard', [UserStoryController::class, 'dashboard'])
             ->name('stories.dashboard');
+         // Add reading history routes
+    Route::get('/reading-histories', [ReadingHistoryController::class, 'index'])->name('reading-histories.index');
+    Route::post('/reading-histories', [ReadingHistoryController::class, 'store'])->name('reading-histories.store');
         Route::resource('/stories', UserStoryController::class);
     });
 });
@@ -96,3 +101,9 @@ Route::middleware(['auth', 'adminMiddleware'])->group(function () {
 // Public story routes
 Route::get('/stories', [StoryController::class, 'index'])->name('stories.index');
 Route::get('/stories/{id}', [StoryController::class, 'show'])->name('stories.show');
+
+//
+Route::get('/stories', [StoryController::class, 'index'])->name('stories.index');
+Route::get('/stories/{id}', [StoryController::class, 'show'])->name('stories.show');
+Route::get('/stories/{id}/read', [StoryController::class, 'read'])->name('stories.read');
+Route::post('/stories/{id}/track-view', [StoryController::class, 'trackView'])->name('stories.track-view');

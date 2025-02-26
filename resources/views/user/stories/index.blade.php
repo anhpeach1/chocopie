@@ -3,259 +3,140 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-    <!-- Styles -->
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
     <style>
-        /* Placeholder Styles - Add to your style.css or here */
-        .banner-placeholder {
-            width: 100%;
-            height: 400px; /* Banner height */
-            background-color: #e0e0e0; /* Light grey placeholder color */
+        .story-card {
+            transition: transform 0.2s;
+            height: 100%;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #757575; /* Darker grey text color */
-            font-size: 1.2rem;
-            border-radius: 8px 8px 0 0; /* Match card image top border radius */
+            flex-direction: column;
         }
-
-        .book-placeholder {
+        .story-card:hover {
+            transform: translateY(-5px);
+        }
+        .story-cover-container {
+            position: relative;
             width: 100%;
-            height: 200px; /* Book card image height */
-            background-color: #e0e0e0; /* Light grey placeholder color */
+            padding-top: 150%; /* Fixed aspect ratio */
+            overflow: hidden;
+            border-radius: 8px 8px 0 0;
+        }
+        .story-cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .category-badge {
+            background: linear-gradient(45deg, #0d6efd, #0dcaf0);
+            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+            margin: 0.2rem;
+            border-radius: 15px;
+        }
+        .carousel-item img {
+            height: 400px;
+            object-fit: cover;
+        }
+        .section-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .card-body {
+            flex: 1;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #757575; /* Darker grey text color */
-            font-size: 1rem;
-            border-radius: 8px 8px 0 0; /* Match card image top border radius */
+            flex-direction: column;
+        }
+        .story-categories {
+            margin-bottom: 10px;
+        }
+        .story-stats {
+            margin-top: auto;
         }
     </style>
-
 </head>
-<body class="font-sans antialiased">
-<x-navbar-login />
-    <div class="container">
-        <div class="main-banner">
-            <div id="mainCarousel" class="carousel slide" data-ride="carousel">
-                <ol class="carousel-indicators">
-                    <li data-target="#mainCarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#mainCarousel" data-slide-to="1"></li>
-                    <li data-target="#mainCarousel" data-slide-to="2"></li>
-                </ol>
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="banner-placeholder">Banner 1</div> <!-- Replaced image with div -->
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>Taste of Sin</h5>
-                            <p>Will it ignite their passion or destroy them both?</p>
+<body class="bg-light">
+    <x-navbar-login />
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        @include('user.stories.partials.carousel')
+        
+        @include('user.stories.partials.filters')
+        
+        <div class="row">
+            @forelse($stories as $story)
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="card story-card">
+                        <div class="story-cover-container">
+                            <a href="{{ route('stories.show', $story->id) }}">
+                                @if($story->cover_image)
+                                    <img src="{{ Storage::url($story->cover_image) }}" class="story-cover" alt="{{ $story->name }}">
+                                @else
+                                    <div class="story-cover bg-secondary d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-book fa-2x text-white"></i>
+                                    </div>
+                                @endif
+                            </a>
                         </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="banner-placeholder">Banner 2</div> <!-- Replaced image with div -->
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>Another Story</h5>
-                            <p>Description for banner 2.</p>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="banner-placeholder">Banner 3</div> <!-- Replaced image with div -->
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>Yet Another Story</h5>
-                            <p>Description for banner 3.</p>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{{ route('stories.show', $story->id) }}" class="text-decoration-none text-dark">
+                                    {{ $story->name }}
+                                </a>
+                            </h5>
+                            <div class="author-info mb-2 small">
+                                <i class="fas fa-user-edit me-1"></i>
+                                {{ $story->author->name }}
+                            </div>
+                            <div class="story-categories">
+                                @foreach($story->categories as $category)
+                                    <span class="badge category-badge">{{ $category->name }}</span>
+                                @endforeach
+                            </div>
+                            <div class="story-stats d-flex justify-content-between text-muted small">
+                                <span><i class="fas fa-eye me-1"></i>{{ $story->views ?? 0 }}</span>
+                                <span><i class="fas fa-comments me-1"></i>{{ $story->comments_count ?? 0 }}</span>
+                                <span><i class="fas fa-clock me-1"></i>{{ $story->created_at->diffForHumans() }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <a class="carousel-control-prev" href="#mainCarousel" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#mainCarousel" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </div>
+            @empty
+                <div class="col-12">
+                    <div class="text-center py-5">
+                        <i class="fas fa-book-open fa-3x mb-3 text-muted"></i>
+                        <p class="text-muted">Chưa có truyện nào được đăng tải.</p>
+                        <a href="{{ route('user.stories.create') }}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Tạo Truyện Mới
+                        </a>
+                    </div>
+                </div>
+            @endforelse
         </div>
 
-        <div class="top-picks mt-4">
-            <h2>Truyện dân gian</h2>
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="card">
-                        <div class="book-placeholder">Book 1</div> <!-- Replaced image with div -->
-                        <div class="card-body">
-                            <h6 class="card-title">Book Title 1</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="card">
-                        <div class="book-placeholder">Book 2</div> <!-- Replaced image with div -->
-                        <div class="card-body">
-                            <h6 class="card-title">Book Title 2</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="card">
-                        <div class="book-placeholder">Book 3</div> <!-- Replaced image with div -->
-                        <div class="card-body">
-                            <h6 class="card-title">Book Title 3</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="card">
-                        <div class="book-placeholder">Book 4</div> <!-- Replaced image with div -->
-                        <div class="card-body">
-                            <h6 class="card-title">Book Title 4</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="card">
-                        <div class="book-placeholder">Book 5</div> <!-- Replaced image with div -->
-                        <div class="card-body">
-                            <h6 class="card-title">Book Title 5</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="card">
-                        <div class="book-placeholder">Book 6</div> <!-- Replaced image with div -->
-                        <div class="card-body">
-                            <h6 class="card-title">Book Title 6</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--  -->
-        <div class="top-picks mt-4">
-            <h2>Cổ tích Việt Nam</h2>
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="card">
-                        <div class="book-placeholder">Book 1</div> <!-- Replaced image with div -->
-                        <div class="card-body">
-                            <h6 class="card-title">Book Title 1</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="card">
-                        <div class="book-placeholder">Book 2</div> <!-- Replaced image with div -->
-                        <div class="card-body">
-                            <h6 class="card-title">Book Title 2</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="card">
-                        <div class="book-placeholder">Book 3</div> <!-- Replaced image with div -->
-                        <div class="card-body">
-                            <h6 class="card-title">Book Title 3</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="card">
-                        <div class="book-placeholder">Book 4</div> <!-- Replaced image with div -->
-                        <div class="card-body">
-                            <h6 class="card-title">Book Title 4</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="card">
-                        <div class="book-placeholder">Book 5</div> <!-- Replaced image with div -->
-                        <div class="card-body">
-                            <h6 class="card-title">Book Title 5</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="card">
-                        <div class="book-placeholder">Book 6</div> <!-- Replaced image with div -->
-                        <div class="card-body">
-                            <h6 class="card-title">Book Title 6</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--  -->
-        <div class="top-picks mt-4">
-            <h2>Cổ tích thế giới</h2>
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="card">
-                        <div class="book-placeholder">Book 1</div> <!-- Replaced image with div -->
-                        <div class="card-body">
-                            <h6 class="card-title">Book Title 1</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="card">
-                        <div class="book-placeholder">Book 2</div> <!-- Replaced image with div -->
-                        <div class="card-body">
-                            <h6 class="card-title">Book Title 2</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="card">
-                        <div class="book-placeholder">Book 3</div> <!-- Replaced image with div -->
-                        <div class="card-body">
-                            <h6 class="card-title">Book Title 3</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="card">
-                        <div class="book-placeholder">Book 4</div> <!-- Replaced image with div -->
-                        <div class="card-body">
-                            <h6 class="card-title">Book Title 4</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="card">
-                        <div class="book-placeholder">Book 5</div> <!-- Replaced image with div -->
-                        <div class="card-body">
-                            <h6 class="card-title">Book Title 5</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="card">
-                        <div class="book-placeholder">Book 6</div> <!-- Replaced image with div -->
-                        <div class="card-body">
-                            <h6 class="card-title">Book Title 6</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="d-flex justify-content-center mt-4">
+            {{ $stories->links() }}
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

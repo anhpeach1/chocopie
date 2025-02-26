@@ -8,7 +8,7 @@ use App\Models\Category;
 use App\Models\Hashtag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\ReadingHistory; 
 class StoryController extends Controller
 {
     /**
@@ -81,12 +81,41 @@ class StoryController extends Controller
     /**
      * Hiển thị chi tiết truyện.
      */
-    public function show(string $id)
-    {
-        $story = Story::with(['author', 'categories', 'hashtags', 'comments.user'])->findOrFail($id);
-        return view('stories.show', compact('story'));
-    }
+    public function show($id)
+{
+    $story = Story::with(['author', 'categories', 'hashtags', 'comments.user'])
+        ->findOrFail($id);
+    
+    return view('user.stories.show', compact('story'));
+}
 
+/**
+ * Display the story for reading.
+ */
+public function read($id)
+{
+    $story = Story::with('author')->findOrFail($id);
+    
+    // Record reading history if user is authenticated
+    if (Auth::check()) {
+        ReadingHistory::updateOrCreate(
+            ['user_id' => Auth::id(), 'story_id' => $story->id],
+            ['read_at' => now()]
+        );
+    }
+    
+    return view('stories.read', compact('story'));
+}
+
+/**
+ * Track story views
+ */
+public function trackView($id)
+{
+    $story = Story::findOrFail($id);
+    $story->increment('views');
+    return response()->json(['success' => true]);
+}
     /**
      * Hiển thị form chỉnh sửa truyện.
      */
