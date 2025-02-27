@@ -53,8 +53,19 @@ Truy cập `http://localhost:8000` trong trình duyệt của bạn để sử d
 - Tailwind CSS
 
 ## Hình ảnh trang web
+### Đăng nhập 
+![Screenshot 2025-02-27 172814](https://github.com/user-attachments/assets/311018d5-3c3a-4399-b5cd-30d4d624cf18)
+### Giao diện người dùng
+![Screenshot_27-2-2025_17470_127 0 0 1](https://github.com/user-attachments/assets/33ff31a5-425c-420c-9f63-617b9f329f09)
+![Screenshot_27-2-2025_173618_127 0 0 1](https://github.com/user-attachments/assets/68dd0407-037d-4887-94c8-cceb3ad7fe11)
+![Screenshot_27-2-2025_173143_127 0 0 1](https://github.com/user-attachments/assets/1f585665-6272-4bf5-ae6f-aa5d259536ed)
+![Screenshot_27-2-2025_17508_127 0 0 1](https://github.com/user-attachments/assets/919070a1-eee8-4365-980b-da608698a7f9)
+
+
+
 ### 
 
 ## Giấy phép
 
 Phân phối theo Giấy phép MIT. Xem `LICENSE` để biết thêm thông tin.
+
