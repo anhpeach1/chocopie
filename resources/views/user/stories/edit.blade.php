@@ -4,9 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chỉnh Sửa Truyện</title>
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+    <!-- Custom CSS -->
     <style>
         .cover-preview {
             max-height: 200px;
@@ -21,14 +26,26 @@
             border-radius: 15px;
             display: inline-block;
         }
+        .dropdown-menu {
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            border: none;
+        }
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
     </style>
 </head>
 <body class="bg-light">
 
+<!-- Use the shared navbar component -->
+<x-navbar-login />
+
+<!-- Secondary navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
         <a class="navbar-brand" href="{{ route('user.stories.dashboard') }}">
-            <i class="fas fa-book-open me-2"></i>Quản Lý Truyện
+            <i class="fas fa-book-open me-2"></i>Quản lý truyện
         </a>
         <div class="navbar-nav ms-auto">
             <a href="{{ route('user.stories.dashboard') }}" class="btn btn-outline-light">
@@ -38,7 +55,17 @@
     </div>
 </nav>
 
+<!-- Main content -->
 <div class="container py-4">
+    <!-- Success message -->
+    @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
+    <!-- Error messages -->
     @if ($errors->any())
     <div class="alert alert-danger">
         <ul class="mb-0">
@@ -48,6 +75,15 @@
         </ul>
     </div>
     @endif
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('user.stories.dashboard') }}">Quản lý truyện</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Chỉnh sửa truyện</li>
+        </ol>
+    </nav>
 
     <div class="row justify-content-center">
         <div class="col-md-10">
@@ -154,6 +190,9 @@
                         </div>
 
                         <div class="text-end mt-4">
+                            <a href="{{ route('stories.show', $story->id) }}" class="btn btn-outline-secondary me-2">
+                                <i class="fas fa-eye me-1"></i>Xem truyện
+                            </a>
                             <button type="submit" class="btn btn-primary btn-lg px-5">
                                 <i class="fas fa-save me-2"></i>Lưu thay đổi
                             </button>
@@ -165,7 +204,17 @@
     </div>
 </div>
 
+<!-- Footer -->
+<footer class="bg-white py-4 mt-5 border-top">
+    <div class="container text-center text-muted">
+        <p class="mb-1">&copy; {{ date('Y') }} Chocopie - Nền tảng chia sẻ truyện</p>
+        <p class="mb-0 small">Tạo và chia sẻ truyện của bạn với cộng đồng</p>
+    </div>
+</footer>
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS, then Select2 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
@@ -173,7 +222,8 @@
 $(document).ready(function() {
     // Initialize Select2
     $('.select2').select2({
-        theme: 'bootstrap-5'
+        theme: 'bootstrap-5',
+        width: '100%'
     });
 
     // Cover image preview
@@ -203,6 +253,7 @@ $(document).ready(function() {
         }
     });
 
+    // Update tags display
     function updateTags() {
         $('#tagContainer').html('');
         tags.forEach((tag) => {
@@ -217,6 +268,7 @@ $(document).ready(function() {
         $('#hashtagInput').val(tags.join(','));
     }
 
+    // Remove tag function - needs to be in global scope
     window.removeTag = function(tag) {
         tags = tags.filter(t => t !== tag);
         updateTags();

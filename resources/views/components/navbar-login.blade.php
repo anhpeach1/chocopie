@@ -10,31 +10,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLinkBrowse" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Browse
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinkBrowse">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLinkCommunity" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Community
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinkCommunity">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                    </ul>
-                </li>
+                
+    
             </ul>
             
-            <form class="d-flex me-3">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+            
             
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
@@ -43,7 +23,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLinkWrite">
                         <li><a class="dropdown-item" href="{{ route('user.stories.create') }}">Create</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        
                     </ul>
                 </li>
                 <li class="nav-item dropdown">

@@ -1,4 +1,3 @@
-<!-- filepath: /c:/Laravel/ts11/chocopie/resources/views/admin/stories/index.blade.php -->
 @extends('layouts.admin')
 
 @section('title', 'Quản Lý Truyện')
@@ -6,9 +5,6 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Quản Lý Truyện Ngắn</h1>
-    <a href="#" class="btn btn-primary">
-        <i class="fas fa-plus"></i> Thêm Truyện Mới
-    </a>
 </div>
 
 <div class="card mb-4">
@@ -21,11 +17,13 @@
                 <label for="category" class="mr-2">Thể loại:</label>
                 <select name="category" id="category" class="form-control form-control-sm">
                     <option value="">Tất cả</option>
+                    
                     @foreach(App\Models\Category::all() as $category)
                         <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
                             {{ $category->name }}
                         </option>
                     @endforeach
+                    
                 </select>
             </div>
             
@@ -68,7 +66,7 @@
                         <th>Tác Giả</th>
                         <th>Thể loại</th>
                         <th>Ngày Tạo</th>
-                        <th>Hành Động</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -83,17 +81,7 @@
                             @endforeach
                         </td>
                         <td>{{ $story->created_at->format('d/m/Y') }}</td>
-                        <td>
-                            <a href="#" class="btn btn-info btn-sm">
-                                <i class="fas fa-eye"></i> Xem
-                            </a>
-                            <a href="#" class="btn btn-warning btn-sm">
-                                <i class="fas fa-edit"></i> Sửa
-                            </a>
-                            <button class="btn btn-danger btn-sm delete-btn" data-id="{{ $story->id }}">
-                                <i class="fas fa-trash-alt"></i> Xóa
-                            </button>
-                        </td>
+                        
                     </tr>
                     @empty
                     <tr>
@@ -115,21 +103,35 @@
 <script>
     $(document).ready(function() {
         // Handle story deletion
-        $('.delete-btn').click(function() {
+        $('.delete-form').on('submit', function(e) {
+            e.preventDefault();
+            
             if (confirm('Bạn có chắc chắn muốn xóa truyện này?')) {
-                const storyId = $(this).data('id');
+                const form = $(this);
+                const row = form.closest('tr');
                 
                 $.ajax({
-                    url: `/admin/stories/${storyId}`,
-                    type: 'DELETE',
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                    },
+                    url: form.attr('action'),
+                    type: 'POST',
+                    data: form.serialize(),
+                    dataType: 'json',
                     success: function(result) {
-                        window.location.reload();
+                        // Show success message
+                        alert(result.message || 'Xóa truyện thành công');
+                        
+                        // Remove the row from the table
+                        row.fadeOut('slow', function() {
+                            $(this).remove();
+                            
+                            // If no more stories, show empty message
+                            if ($('tbody tr').length === 0) {
+                                $('tbody').html('<tr><td colspan="6" class="text-center">Không có truyện nào</td></tr>');
+                            }
+                        });
                     },
                     error: function(xhr) {
                         alert('Đã xảy ra lỗi khi xóa truyện.');
+                        console.error(xhr);
                     }
                 });
             }

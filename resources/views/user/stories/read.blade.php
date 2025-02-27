@@ -140,51 +140,6 @@
                     </a>
                 </div>
                 <div>
-                    <button id="share-button" class="btn btn-outline-success">
-                        <i class="fas fa-share-alt me-2"></i>Chia sẻ
-                    </button>
-                </div>
-            </div>
-            
-            <div class="mt-5">
-                <h5>Bình luận</h5>
-                <div class="card">
-                    <div class="card-body">
-                        @if(Auth::check())
-                            <form action="{{ route('comments.store') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="story_id" value="{{ $story->id }}">
-                                <div class="mb-3">
-                                    <textarea class="form-control" name="content" rows="3" placeholder="Viết bình luận của bạn..."></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Gửi bình luận</button>
-                            </form>
-                        @else
-                            <p class="text-center mb-0">
-                                <a href="{{ route('login') }}">Đăng nhập</a> để viết bình luận
-                            </p>
-                        @endif
-                    </div>
-                </div>
-                
-                <div class="mt-4">
-                    @forelse($story->comments as $comment)
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="card-subtitle mb-2 text-muted">
-                                        {{ $comment->user->name }}
-                                    </h6>
-                                    <small class="text-muted">
-                                        {{ $comment->created_at->diffForHumans() }}
-                                    </small>
-                                </div>
-                                <p class="card-text">{{ $comment->content }}</p>
-                            </div>
-                        </div>
-                    @empty
-                        <p class="text-center text-muted mt-4">Chưa có bình luận nào</p>
-                    @endforelse
                 </div>
             </div>
         </div>

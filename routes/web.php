@@ -15,8 +15,8 @@ use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\AdminStoryController;
 use App\Http\Controllers\UserStoryController;
 Route::get('/', function () {
-    return view('home');
-})->name('welcome');
+    return view('login');
+});
 
 Route::get('/dashboard', function () {
     if (Auth::user()->userType == 'admin') {
@@ -38,24 +38,13 @@ require __DIR__.'/auth.php';
 // User routes
 Route::middleware(['auth', 'userMiddleware'])->group(function () {
     Route::get('/user/index', [UserController::class, 'index'])->name('user.index');
-    // Route::resource('stories', StoryController::class);
-    // // Reading history routes for users
-    // Route::get('/reading-histories', [ReadingHistoryController::class, 'index'])->name('reading-histories.index');
-    // Route::post('/reading-histories', [ReadingHistoryController::class, 'store'])->name('reading-histories.store');
-    // Route::get('/stories/create', [StoryController::class, 'create'])->name('stories.create');
-    // Route::post('/stories', [StoryController::class, 'store'])->name('stories.store');
     Route::prefix('user')->name('user.')->group(function () {
-        // Dashboard route should be here
-        // Route::get('/stories/dashboard', [UserStoryController::class, 'dashboard'])->name('stories.dashboard');
-        // Resource routes
-//         Route::get('/stories/{id}/read', [StoryController::class, 'read'])->name('stories.read');
-// Route::post('/stories/{id}/track-view', [StoryController::class, 'trackView'])->name('stories.track-view');
-        Route::get('/stories/dashboard', [UserStoryController::class, 'dashboard'])
-            ->name('stories.dashboard');
+    Route::get('/stories/dashboard', [UserStoryController::class, 'dashboard'])
+    ->name('stories.dashboard');
          // Add reading history routes
     Route::get('/reading-histories', [ReadingHistoryController::class, 'index'])->name('reading-histories.index');
     Route::post('/reading-histories', [ReadingHistoryController::class, 'store'])->name('reading-histories.store');
-        Route::resource('/stories', UserStoryController::class);
+    Route::resource('/stories', UserStoryController::class);
     });
 });
 
@@ -79,10 +68,6 @@ Route::middleware(['auth', 'adminMiddleware'])->group(function () {
     // Reading histories management - CHANGE THIS LINE
     Route::get('admin/reading-histories', [AdminStoryController::class, 'readingHistories'])->name('admin.reading-histories');
     Route::delete('admin/reading-histories/{id}', [AdminStoryController::class, 'destroyReadingHistory'])->name('admin.reading-histories.destroy');
-
-    // Comments management - Fixed slash instead of dot
-    Route::get('admin/comments', [AdminController::class, 'comments'])->name('admin.comments');
-    Route::delete('admin/comments/{id}', [AdminController::class, 'destroyComment'])->name('admin.comments.destroy'); // Fixed
     
     // Hashtags management - Fixed slash instead of dot
     Route::get('admin/hashtags', [AdminController::class, 'hashtags'])->name('admin.hashtags');

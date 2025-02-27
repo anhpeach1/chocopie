@@ -7,30 +7,10 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLinkBrowse" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Browse
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinkBrowse">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLinkCommunity" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Community
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinkCommunity">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-            </li>
+            
+            
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2 rounded-pill" type="search" placeholder="Search" aria-label="Search">
-        </form>
+        
         <ul class="navbar-nav">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLinkWrite" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

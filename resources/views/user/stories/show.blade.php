@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $story->name }}</title>
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- App Styles -->
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <style>
         .story-cover {
             width: 100%;
@@ -121,21 +126,14 @@
                                 </div>
                                 <div class="col">
                                     <div class="stat-card bg-white">
-                                        <div class="stat-icon text-success">
-                                            <i class="fas fa-comments"></i>
-                                        </div>
-                                        <div class="text-muted small">Bình luận</div>
-                                        <div class="fw-bold">{{ $story->comments->count() }}</div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="stat-card bg-white">
                                         <div class="stat-icon text-info">
                                             <i class="fas fa-calendar-alt"></i>
                                         </div>
                                         <div class="text-muted small">Ngày tạo</div>
                                         <div class="fw-bold">{{ $story->created_at->format('d/m/Y') }}</div>
                                     </div>
+                                </div>
+                                <div class="col">
                                 </div>
                             </div>
                         </div>
@@ -160,14 +158,38 @@
             <div class="col-md-8">
                 <div class="card mb-4">
                     <div class="card-header bg-white">
-                        <h5 class="mb-0">Tóm tắt nội dung</h5>
+                        <h5 class="mb-0"></h5>
                     </div>
                     <div class="card-body">
                         <p class="description-text">{{ $story->description }}</p>
                     </div>
                 </div>
                 
-                <!-- Comment section would go here -->
+                <div class="card mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Thông tin tác phẩm</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <strong class="d-block text-muted">Ngày xuất bản:</strong>
+                                <span>{{ $story->created_at->format('d/m/Y') }}</span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <strong class="d-block text-muted">Cập nhật lần cuối:</strong>
+                                <span>{{ $story->updated_at->format('d/m/Y') }}</span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <strong class="d-block text-muted">Số trang:</strong>
+                                <span>{{ $story->page_count ?? 'Chưa cập nhật' }}</span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <strong class="d-block text-muted">Trạng thái:</strong>
+                                <span>{{ $story->status == 'published' ? 'Đã xuất bản' : 'Đang viết' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="col-md-4">
@@ -205,11 +227,14 @@
                     </div>
                 </div>
                 @endif
+
             </div>
         </div>
     </div>
 
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Track view count
@@ -221,6 +246,43 @@
                     '_token': "{{ csrf_token() }}"
                 }
             });
+
+            // Copy link functionality
+            $('#copy-link').click(function() {
+                const url = $(this).data('url');
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('Đã sao chép liên kết vào clipboard!');
+                });
+            });
+            
+            // Flash message handling
+            const flashMessage = "{{ session('success') }}";
+            if (flashMessage) {
+                // Create and show toast notification
+                const toast = document.createElement('div');
+                toast.className = 'position-fixed bottom-0 end-0 p-3';
+                toast.style.zIndex = '5';
+                toast.innerHTML = `
+                    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong class="me-auto">Thông báo</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            ${flashMessage}
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(toast);
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    const toastEl = document.querySelector('.toast');
+                    const bsToast = bootstrap.Toast.getInstance(toastEl);
+                    if (bsToast) bsToast.hide();
+                }, 5000);
+            }
         });
     </script>
 </body>

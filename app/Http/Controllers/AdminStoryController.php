@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Story;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use App\Models\ReadingHistory;
 class AdminStoryController extends Controller
 {
     /**
@@ -148,22 +150,52 @@ class AdminStoryController extends Controller
     }
 
     /**
-     * Remove the specified story.
+     * Remove the specified story from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        $story = Story::findOrFail($id);
-        // Delete related data if needed
-        // $story->comments()->delete();
-        
-        $story->delete();
-        
-        if (request()->ajax()) {
-            return response()->json(['success' => true]);
+        try {
+            $story = Story::findOrFail($id);
+            
+            // Delete cover image if exists
+            if ($story->cover_image && Storage::disk('public')->exists($story->cover_image)) {
+                Storage::disk('public')->delete($story->cover_image);
+            }
+            
+            // Delete related records
+            $story->categories()->detach();
+            $story->hashtags()->detach();
+            $story->comments()->delete();
+            
+            // Delete reading histories
+            ReadingHistory::where('story_id', $story->id)->delete();
+            
+            // Delete the story
+            $story->delete();
+            
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Truyện đã được xóa thành công.'
+                ]);
+            }
+            
+            return redirect()->route('admin.stories')
+                ->with('success', 'Truyện đã được xóa thành công.');
+        } catch (\Exception $e) {
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Lỗi: ' . $e->getMessage()
+                ], 500);
+            }
+            
+            return redirect()->route('admin.stories')
+                ->with('error', 'Lỗi: ' . $e->getMessage());
         }
-        
-        return redirect()->route('admin.stories')
-            ->with('success', 'Truyện đã được xóa thành công!');
     }
 
     /**

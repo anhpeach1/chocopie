@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin Dashboard') - Web Đọc Truyện</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -115,26 +116,6 @@
                             <i class="fas fa-book"></i> Truyện Ngắn
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.comments*') ? 'active' : '' }}" href="{{ route('admin.comments') }}">
-                            <i class="fas fa-comments"></i> Bình Luận
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.hashtags*') ? 'active' : '' }}" href="{{ route('admin.hashtags') }}">
-                            <i class="fas fa-hashtag"></i> Hashtags
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.reading-histories*') ? 'active' : '' }}" href="{{ route('admin.reading-histories') }}">
-                            <i class="fas fa-history"></i> Lịch Sử Đọc
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}" href="{{ route('admin.users') }}">
-                            <i class="fas fa-users"></i> Người Dùng
-                        </a>
-                    </li>
                 </ul>
             </nav>
 
@@ -144,12 +125,6 @@
             </main>
         </div>
     </div>
-
-    <footer class="footer mt-auto py-3 bg-light text-center" style="margin-left: 250px;">
-        <div class="container">
-            <span class="text-muted">© 2024 Web Đọc Truyện. All Rights Reserved.</span>
-        </div>
-    </footer>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
